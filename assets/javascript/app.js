@@ -45,13 +45,21 @@ $(document).ready(function() {
         // childsnapshot.val()
         let trainName = childsnapshot.val().trainName;
         let destination = childsnapshot.val().destination;
-        let firstTrainTime = childsnapshot.val().firstTrainTime;
+        let firstTrainTime = moment(childsnapshot.val().firstTrainTime, "HH:mm");
         let Frequency = childsnapshot.val().Frequency;
+        // caculate next arrival and minites away
+        let minutefromFirst = moment().diff(firstTrainTime, "minutes");
+        let numberOfStops = Math.ceil(minutefromFirst / parseInt(Frequency));
+        let minutesAway = numberOfStops * Frequency - minutefromFirst;
+        let nextArrival  = moment().add(minutesAway, "minutes").format("HH:mm");
+
         // append the child to the table
         let schedule = $("<tr>");
         let columns = [$("<th scope='col'>").text(trainName),
                        $("<th scope='col'>").text(destination),
-                       $("<th scope='col'>").text(Frequency)];
+                       $("<th scope='col'>").text(Frequency),
+                       $("<th scope='col'>").text(nextArrival),
+                       $("<th scope='col'>").text(minutesAway)];
         for (i = 0; i < columns.length; i++){
             schedule.append(columns[i]);
         }
