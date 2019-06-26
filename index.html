@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Time Sheet</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/49e72656bd.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <style>
+        .panel-body a {
+            word-break: break-all;
+        }
+
+        #tableHead {
+            border-top: solid 2px;
+            border-bottom: solid 2px;
+            border-color: lightgrey;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="jumbotron" style="background-color: rgb(49, 10, 10); color: white;">
+            <h1 class="text-center"><strong> Any Time is Train Time  </strong></h1>
+            <h2 class="text-center">Choo Choo. Chee Chee.</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <br>
+                <div class="panel panel-primary">
+                    <div class="panel-heading " style="background-color:rgb(211, 211, 211)">
+                        <h3 class="panel-title"><strong>Current Train Schedule</strong></h3>
+                    </div>
+                    <div class="panel-body" id="well-section">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr id="tableHead">
+                                    <th scope="col">Train Name</th>
+                                    <th scope="col">Destination</th>
+                                    <th scope="col">Frequency(min)</th>
+                                    <th scope="col">Next Arrival</th>
+                                    <th scope="col">Minutes Away</th>
+                                </tr>
+                            </thead>
+                            <tbody id="trainList">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <br>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" style="background-color:rgb(211, 211, 211)">
+                        <h3 class="panel-title"><strong> Add Train</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+
+                            <div class="form-group">
+                                <label for="input">Train Name</label>
+                                <input type="text" class="form-control" id="trainNameInput">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="input">Destination</label>
+                                <input type="text" class="form-control" id="DestinationInput">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="input">First Train Time(HH:mm)-military time</label>
+                                <input type="text" class="form-control" id="firstTrainTimeInput">
+                            </div>
+                            <div class="form-group">
+                                <label for="input">Frequency(min)</label>
+                                <input type="text" class="form-control" id="frequencyInput">
+                            </div>
+
+                            <button type="submit" class="btn btn-default" style=float:left; id="submit">Submit</button>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <hr>
+                <h5 class="text-center"><small>Made by Mengyuan Zhang | Sheena Brevig | Won Jin Lee with lots and lots
+                        of <i class="fa fa-heart"></i></small></h5>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyCanlYIc7n-Wel8wDeaMxMzYtViVVCOwpI",
+            authDomain: "recent-user-with-push.firebaseapp.com",
+            databaseURL: "https://ucla-ff2b6.firebaseio.com/",
+            storageBucket: "recent-user-with-push.appspot.com",
+            messagingSenderId: "208476116054"
+        };
+
+        firebase.initializeApp(config);
+
+        var database = firebase.database();
+
+        var name = "";
+        var role = "";
+        var startDate = 00 / 00 / 0000;
+        var monthlyRate = "";
+
+        $("#submit").on("click", function () {
+            event.preventDefault()
+
+            name = $("#nameSearch").val().trim();
+            role = $("#roleSearch").val().trim();
+            startDate = $("#startDateSearch").val().trim();
+            monthlyRate = $("#monthlyRateSearch").val().trim();
+
+            database.ref().push({
+                name: name,
+                role: role,
+                startDate: startDate,
+                monthlyRate: monthlyRate,
+                dateAdded: firebase.database.ServerValue.TIMESTAMP
+            });
+
+        });
+
+        database.ref().on("child_added", function (snapshot) {
+
+            var sv = snapshot.val()
+
+
+            newDiv = $(`
+            <tr>
+            <th> ${sv.name}</th>
+            <th> ${sv.role}</th>
+            <th> ${sv.startDate}</th>
+            <th></th>
+            <th> ${sv.monthlyRate}</th>
+            
+            </tr>
+                `)
+
+            $("#list").append(newDiv)
+
+        })
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
