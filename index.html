@@ -9,17 +9,9 @@
     <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-database.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <style>
-        .panel-body a {
-            word-break: break-all;
-        }
-
-        #tableHead {
-            border-top: solid 2px;
-            border-bottom: solid 2px;
-            border-color: lightgrey;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -73,7 +65,7 @@
 
                             <div class="form-group">
                                 <label for="input">Destination</label>
-                                <input type="text" class="form-control" id="DestinationInput">
+                                <input type="text" class="form-control" id="destinationInput">
                             </div>
 
                             <div class="form-group">
@@ -106,70 +98,6 @@
         </div>
 
     </div>
-
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script>
-        var config = {
-            apiKey: "AIzaSyCanlYIc7n-Wel8wDeaMxMzYtViVVCOwpI",
-            authDomain: "recent-user-with-push.firebaseapp.com",
-            databaseURL: "https://ucla-ff2b6.firebaseio.com/",
-            storageBucket: "recent-user-with-push.appspot.com",
-            messagingSenderId: "208476116054"
-        };
-
-        firebase.initializeApp(config);
-
-        var database = firebase.database();
-
-        var name = "";
-        var role = "";
-        var startDate = 00 / 00 / 0000;
-        var monthlyRate = "";
-
-        $("#submit").on("click", function () {
-            event.preventDefault()
-
-            name = $("#nameSearch").val().trim();
-            role = $("#roleSearch").val().trim();
-            startDate = $("#startDateSearch").val().trim();
-            monthlyRate = $("#monthlyRateSearch").val().trim();
-
-            database.ref().push({
-                name: name,
-                role: role,
-                startDate: startDate,
-                monthlyRate: monthlyRate,
-                dateAdded: firebase.database.ServerValue.TIMESTAMP
-            });
-
-        });
-
-        database.ref().on("child_added", function (snapshot) {
-
-            var sv = snapshot.val()
-
-
-            newDiv = $(`
-            <tr>
-            <th> ${sv.name}</th>
-            <th> ${sv.role}</th>
-            <th> ${sv.startDate}</th>
-            <th></th>
-            <th> ${sv.monthlyRate}</th>
-            
-            </tr>
-                `)
-
-            $("#list").append(newDiv)
-
-        })
-
-
-
-
-    </script>
-
-
 </body>
 
 </html>
