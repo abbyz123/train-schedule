@@ -15,7 +15,7 @@ var database = firebase.database();
 //capture button click
 $(document).ready(function() {
     $("#submit").on("click", function (event) {
-        event.preventDefault();
+        //event.preventDefault();
         trainName = $("#trainNameInput").val().trim();
         destination = $("#destinationInput").val().trim();
         firstTrainTime = $("#firstTrainTimeInput").val().trim();
